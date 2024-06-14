@@ -3,13 +3,12 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FRAMEWORK } from '@/types';
-import DropdownSelect from './ui/DropdownSelect';
-import { Button } from './ui';
 import { useAppContext } from '@/context';
 import { api } from '@/trpc/react';
 import { type TRPCClientErrorLike } from '@trpc/client';
 import { type AppRouter } from '@/server/api/root';
 import toast from 'react-hot-toast';
+import { Button, Select } from './ui';
 
 type Props = {
     isLoading: boolean,
@@ -25,14 +24,14 @@ const frameworks = Object.values(FRAMEWORK);
 type Inputs = z.infer<typeof schema>;
 
 const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
-    const { setGeneratedPkgs } = useAppContext();
+    const { setGeneratedPackages } = useAppContext();
     const { register, handleSubmit, formState, control, reset } = useForm<Inputs>(
         { resolver: zodResolver(schema) }
     );
-    const testMutate = api.generate.hello.useMutation({
+    const generatePackageMutate = api.generate.package.useMutation({
         onSuccess: async (data) => {
             console.log(data.choices[0]?.message?.content ?? '');
-            setGeneratedPkgs(data.choices[0]?.message?.content ?? '');
+            setGeneratedPackages(data.choices[0]?.message?.content ?? '');
             setIsDone(true);
             reset();
             setIsLoading(false);
@@ -48,9 +47,9 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data);
-        setGeneratedPkgs("");
+        setGeneratedPackages("");
         setIsLoading(true);
-        testMutate.mutate(data);
+        generatePackageMutate.mutate(data);
     };
 
     return (
@@ -108,7 +107,7 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                             Select your framework
                         </span>
                     </label>
-                    <DropdownSelect
+                    <Select
                         control={control}
                         name="framework"
                         options={frameworks}
@@ -123,7 +122,6 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                     aria-label="Find packages"
                     className="w-full"
                     isLoading={isLoading}
-                    loadingVariant="dots"
                     disabled={isLoading}
                 >
                     Find packages

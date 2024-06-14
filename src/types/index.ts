@@ -1,4 +1,4 @@
-type ChatGPTModel =
+type GroqModel =
   | "gemma-7b-it"
   | "llama3-70b-8192"
   | "llama3-8b-8192"
@@ -56,6 +56,5 @@ enum DURATION {
 }
 
 
-export type {
-    
-}
+export type { GroqModel, ChatGPTMessage };
+export {FRAMEWORK}
