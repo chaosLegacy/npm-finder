@@ -1,6 +1,6 @@
 import React from 'react'
 import Footer from './Footer';
-import { TRPCReactProvider } from '~/trpc/react';
+import { TRPCReactProvider } from '@/trpc/react';
 import Header from './Header';
 
 type DefaultLayoutProps = {
