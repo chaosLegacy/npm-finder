@@ -8,7 +8,14 @@ export default {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
       },
+      screens: {
+        xxs: "320px",
+        xs: "480px",
+      },
     },
+  },
+  daisyui: {
+    themes: ["light", "dark", "cupcake", "night", "forest"],
   },
   plugins: [require("daisyui")],
 } satisfies Config;
