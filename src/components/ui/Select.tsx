@@ -1,47 +1,39 @@
-'use client';
-import { useState } from 'react';
-import { Control, Controller, FieldValues, Path, PathValue } from 'react-hook-form';
+import { toTitleCase } from "@/utils/functions";
+import { type SetStateAction, type Dispatch } from "react";
+import React from "react";
+import { twMerge } from "tailwind-merge";
 
-type DropdownSelectProps<TFieldValues extends FieldValues, TContext = unknown> = {
-    control: Control<TFieldValues, TContext>;
-    name: Path<TFieldValues>;
-    options: PathValue<TFieldValues, Path<TFieldValues>>[];
-};
+type SelectProps<T extends string> = {
+    options: T[];
+    selected: T;
+    setSelected: Dispatch<SetStateAction<T>>;
+} & React.HTMLAttributes<HTMLDivElement>;
 
-const Select = <TFieldValues extends FieldValues>({
-    control,
-    name,
+const Select = <T extends string>({
     options,
-}: DropdownSelectProps<TFieldValues>) => {
-    const [selected, setSelected] = useState(options[0]);
-
+    selected,
+    setSelected,
+    className,
+    ...props
+}: SelectProps<T>) => {
     return (
-        <Controller
-            control={control}
-            name={name}
-            render={({ field: { onChange, value } }) => (
-                <div className="w-full max-w-xs">
-                    <select
-                        className="select select-bordered w-full"
-                        value={value ?? selected}
-                        onChange={(e) => {
-                            const val = e.target.value as PathValue<TFieldValues, Path<TFieldValues>>;
-                            onChange(val);
-                            setSelected(val);
-                        }}
-                    >
-                        <option disabled value="">
-                            Select an option
-                        </option>
-                        {options.map((option, index) => (
-                            <option key={index} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            )}
-        />
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+        <div className={twMerge("relative w-full max-w-xs", className)} {...props}>
+            <select
+                className="select select-bordered w-full"
+                value={selected}
+                onChange={(e) => setSelected(e.target.value as T)}
+            >
+                <option disabled value="">
+                    Select an option
+                </option>
+                {options.map((option, index) => (
+                    <option key={index} value={option}>
+                        {toTitleCase(option)}
+                    </option>
+                ))}
+            </select>
+        </div>
     );
 };
 

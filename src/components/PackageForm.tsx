@@ -8,7 +8,7 @@ import { api } from '@/trpc/react';
 import { type TRPCClientErrorLike } from '@trpc/client';
 import { type AppRouter } from '@/server/api/root';
 import toast from 'react-hot-toast';
-import { Button, Select } from './ui';
+import { Button, SelectController } from './ui';
 
 type Props = {
     isLoading: boolean,
@@ -107,7 +107,7 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                             Select your framework
                         </span>
                     </label>
-                    <Select
+                    <SelectController
                         control={control}
                         name="framework"
                         options={frameworks}

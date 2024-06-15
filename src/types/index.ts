@@ -28,14 +28,14 @@ type Package = {
   lastPublish?: string;
 };
 
-type PkgData = {
+type PackageData = {
   start: string;
   end: string;
   package: string;
-  downloads: PkgDownload[];
+  downloads: PackageDownload[];
 };
 
-type PkgDownload = {
+type PackageDownload = {
   downloads: number;
   day: string;
 };
@@ -56,5 +56,12 @@ enum DURATION {
 }
 
 
-export type { GroqModel, ChatGPTMessage };
-export {FRAMEWORK}
+export type {
+  Package,
+  PackageData,
+  PackageDownload,
+  ChartDataNivo,
+  GroqModel,
+  ChatGPTMessage,
+};
+export { FRAMEWORK, DURATION };
