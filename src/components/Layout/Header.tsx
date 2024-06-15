@@ -6,9 +6,9 @@ const Header = () => {
     return (
         <header
             aria-label="header"
-            className='navbar glass'
+            className='navbar'
         >
-            <nav className="w-full flex  items-center justify-between px-4 py-1">
+            <nav className="w-full flex  items-center justify-between px-4">
                 <Link
                     aria-label="navigate to home page"
                     href="/"

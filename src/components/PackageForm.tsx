@@ -9,6 +9,7 @@ import { type TRPCClientErrorLike } from '@trpc/client';
 import { type AppRouter } from '@/server/api/root';
 import toast from 'react-hot-toast';
 import { Button, SelectController } from './ui';
+import { twMerge } from 'tailwind-merge';
 
 type Props = {
     isLoading: boolean,
@@ -30,7 +31,6 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
     );
     const generatePackageMutate = api.generate.package.useMutation({
         onSuccess: async (data) => {
-            console.log(data.choices[0]?.message?.content ?? '');
             setGeneratedPackages(data.choices[0]?.message?.content ?? '');
             setIsDone(true);
             reset();
@@ -42,6 +42,8 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
             } else {
                 toast.error("Something went wrong");
             }
+            setIsDone(true);
+            setIsLoading(false);
         },
     });
 
@@ -53,33 +55,33 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
     };
 
     return (
-        <div className="grid place-items-center gap-8">
-            <h1 className="max-w-2xl text-center text-3xl font-bold leading-tight text-gray-50 sm:text-5xl sm:leading-tight">
+        <div className='flex flex-col gap-10'>
+            <h1 className="max-w-lg text-center text-4xl font-bold leading-tight">
                 Find the best{" "}
-                <span className="text-pink-600">npm packages</span> for your
+                <span className="text-primary underline">npm packages</span> for your
                 project
             </h1>
             <form
                 aria-label="form for finding NPM packages"
-                className="grid w-full max-w-xl gap-7"
+                className="flex flex-col gap-8"
                 onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
             >
-                <fieldset className="grid gap-5">
+                <fieldset className="grid gap-5 relative">
                     <label
                         htmlFor="requirement"
-                        className="flex items-center gap-2.5 text-sm font-medium sm:text-base"
-                    >
-                        <span className="grid h-7 w-7 place-items-center rounded-full bg-gray-500 text-xs font-bold text-white sm:text-sm">
-                            1
-                        </span>
-                        <span className="flex-1 text-gray-50">
+                        className="flex items-center gap-2 text-sm font-medium sm:text-base">
+                        <span className="indicator-item badge badge-secondary h-7 w-7">1</span> 
+                        <span>
                             Enter your requirement
                         </span>
                     </label>
                     <textarea
                         id="requirement"
                         rows={2}
-                        className="w-full rounded-md border-gray-400 bg-transparent px-4 pt-2.5 text-base text-gray-50 transition-colors placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-gray-800"
+                        className={twMerge(
+                            'w-full rounded-md textarea textarea-lg resize-none',
+                            formState.errors.requirement ? 'textarea-error' : 'textarea-bordered'
+                        )}
                         placeholder="e.g. Time"
                         {...register("requirement")}
                         onKeyDown={(e) => {
@@ -90,7 +92,7 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                         }}
                     />
                     {formState.errors.requirement ? (
-                        <p className="-mt-1.5 text-sm font-medium text-red-500">
+                        <p className="-mt-1.5 text-sm font-medium text-red-500 absolute bottom-2 left-6">
                             {formState.errors.requirement.message}
                         </p>
                     ) : null}
@@ -98,12 +100,9 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                 <fieldset className="grid gap-5">
                     <label
                         htmlFor="framework"
-                        className="flex items-center gap-2.5 text-sm font-medium  sm:text-base"
-                    >
-                        <span className="grid h-7 w-7 place-items-center rounded-full bg-gray-500 text-xs font-bold text-white sm:text-sm">
-                            2
-                        </span>
-                        <span className="flex-1 text-gray-50">
+                        className="flex items-center gap-2 text-sm font-medium sm:text-base">
+                        <span className="indicator-item badge badge-secondary h-7 w-7">2</span> 
+                        <span>
                             Select your framework
                         </span>
                     </label>
@@ -120,7 +119,7 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                 </fieldset>
                 <Button
                     aria-label="Find packages"
-                    className="w-full"
+                    className="btn-primary "
                     isLoading={isLoading}
                     disabled={isLoading}
                 >

@@ -18,9 +18,9 @@ const Select = <T extends string>({
 }: SelectProps<T>) => {
     return (
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-        <div className={twMerge("relative w-full max-w-xs", className)} {...props}>
+        <div className={twMerge("relative w-full", className)} {...props}>
             <select
-                className="select select-bordered w-full"
+                className="select select-bordered w-full select-lg"
                 value={selected}
                 onChange={(e) => setSelected(e.target.value as T)}
             >

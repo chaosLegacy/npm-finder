@@ -1,13 +1,12 @@
 import React from 'react'
-import { Button, Dropdown, Toggle } from './ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
-import PackageCard from './PackageCard';
 import { useAppContext } from '@/context';
 import { DURATION } from '@/types';
 import { useWindowSize } from '@/hooks';
 import { type ChartData, type Point } from 'chart.js';
-import LineChart from './LineChart';
+import { Button, Select, Toggle } from './ui';
+import { LineChart, PackageCard } from '@/components';
 
 type Props = {
     generatedPackages: string,
@@ -81,7 +80,7 @@ const PackageList = ({
                                 <h2 className="text-2xl font-bold leading-tight text-gray-50 sm:text-3xl sm:leading-tight">
                                     Downloads chart
                                 </h2>
-                                <Dropdown
+                                <Select
                                     selected={duration}
                                     setSelected={setDuration}
                                     options={durations}

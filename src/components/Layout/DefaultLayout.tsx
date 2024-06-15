@@ -1,7 +1,7 @@
 import React from 'react'
-import Footer from './Footer';
+import {Header, Footer} from '@/components/Layout';
 import { TRPCReactProvider } from '@/trpc/react';
-import Header from './Header';
+import { ToastWrapper } from '@/components/ui';
 
 type DefaultLayoutProps = {
     children: React.ReactNode;
@@ -15,6 +15,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 <div className="flex-1">{children}</div>
                 <Footer />
             </div>
+            <ToastWrapper />
         </TRPCReactProvider>
     )
 }
