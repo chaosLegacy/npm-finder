@@ -55,7 +55,7 @@ const Generate = () => {
     }, [generatedPackages, isDone, isChartView, duration]);
 
     return (
-        <main className="hero py-4">
+        <main className="hero min-h-[calc(100vh-7.6rem)]">
             <div className="hero-content">
                 {generatedPackages ? (
                     <PackageList

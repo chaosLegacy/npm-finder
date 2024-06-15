@@ -4,14 +4,24 @@ import { FRAMEWORK } from "@/types";
 import { TRPCError } from "@trpc/server";
 import Groq from "groq-sdk";
 
-if (!process.env.GROQ_API_KEY) {
-  throw new Error(
-    "GROQ_API_KEY is not defined in .env file. Please add it there (see README.md for more details).",
-  );
-}
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
+// Singleton instance of Groq
+let groq: Groq | null = null;
+
+const getGroqInstance = () => {
+  if (!groq) {
+    if (!process.env.GROQ_API_KEY) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message:
+          "GROQ_API_KEY is not defined in .env file. Please add it there (see README.md for more details).",
+      });
+    }
+    groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
+    });
+  }
+  return groq;
+};
 
 const generateRouter = createTRPCRouter({
   package: publicProcedure
@@ -22,12 +32,24 @@ const generateRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
+      const groqClient = getGroqInstance();
       const { requirement, framework } = input;
       console.log({
         requirement,
         framework,
       });
+      if (!process.env.GROQ_API_KEY) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "GROQ_API_KEY is not defined in .env file. Please add it there (see README.md for more details).",
+        });
+      }
 
+      const groq = new Groq({
+        apiKey: process.env.GROQ_API_KEY,
+      });
+      
       const prompt = `Find npm packages for ${requirement} and ${
         (framework as FRAMEWORK) === FRAMEWORK.NOT_SPECIFIED
           ? "any framework"
@@ -42,24 +64,33 @@ const generateRouter = createTRPCRouter({
         });
       }
 
-      return groq.chat.completions.create({
-        model: "llama3-8b-8192",
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a node package manager (npm) package finder. I will give you a requirement and a framework of my choice. You will recommend me npm packages (from 2 to 3 packages) for that requirement and framework. You will only find packages compatible with my framework. You will only find packages that are well-maintained, safe, and not depreciated. For example: if I ask you to find a package for date and time, you will suggest dayjs, not moment (moment is depreciated). You will provide a description within 25 words for each package. Make sure to only show name and description and nothing else, not even the intro text. Make sure to use the actual name of each package. You will not ask any further question. You will use the following templeate: 1. Package name: description.",
-          },
-          { role: "user", content: prompt },
-        ],
-        temperature: 0.7,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-        max_tokens: 200,
-        stream: false,
-        n: 1,
-      });
+      try {
+        const response = await groqClient.chat.completions.create({
+          model: "llama3-8b-8192",
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are a node package manager (npm) package finder. I will give you a requirement and a framework of my choice. You will recommend me npm packages (from 2 to 5 packages) for that requirement and framework. You will only find packages compatible with my framework. You will only find packages that are well-maintained, safe, and not depreciated. For example: if I ask you to find a package for date and time, you will suggest dayjs, not moment (moment is depreciated). You will provide a description within 25 words for each package. Make sure to only show name and description and nothing else, not even the intro text. Make sure to use the actual name of each package. You will not ask any further question. You will use the following template: 1. Package name: description.",
+            },
+            { role: "user", content: prompt },
+          ],
+          temperature: 0.7,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+          max_tokens: 200,
+          stream: false,
+          n: 1,
+        });
+
+        return response;
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to generate package suggestions.",
+        });
+      }
     }),
 });
 

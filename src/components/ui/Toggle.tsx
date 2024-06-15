@@ -31,7 +31,7 @@ const Toggle = ({
             )}
             <input
                 type="checkbox"
-                className={twMerge("toggle", enabled ? "bg-pink-700" : "bg-pink-400")}
+                className={twMerge("toggle", enabled ? "bg-primary" : "bg-primary")}
                 checked={enabled}
                 onChange={() => setEnabled(!enabled)}
                 disabled={disabled}

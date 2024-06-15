@@ -70,7 +70,7 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                     <label
                         htmlFor="requirement"
                         className="flex items-center gap-2 text-sm font-medium sm:text-base">
-                        <span className="indicator-item badge badge-secondary h-7 w-7">1</span> 
+                        <span className="indicator-item badge badge-primary h-7 w-7">1</span> 
                         <span>
                             Enter your requirement
                         </span>
@@ -82,7 +82,7 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                             'w-full rounded-md textarea textarea-lg resize-none',
                             formState.errors.requirement ? 'textarea-error' : 'textarea-bordered'
                         )}
-                        placeholder="e.g. Time"
+                        placeholder="e.g. DatePicker"
                         {...register("requirement")}
                         onKeyDown={(e) => {
                             if (!formState.isValid || isLoading) return;
@@ -101,7 +101,7 @@ const PackageForm = ({ isLoading, setIsLoading, setIsDone }: Props) => {
                     <label
                         htmlFor="framework"
                         className="flex items-center gap-2 text-sm font-medium sm:text-base">
-                        <span className="indicator-item badge badge-secondary h-7 w-7">2</span> 
+                        <span className="indicator-item badge badge-primary h-7 w-7">2</span> 
                         <span>
                             Select your framework
                         </span>

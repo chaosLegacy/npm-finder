@@ -21,7 +21,7 @@ const Footer = () => {
                     rel="noreferrer"
                     className="link link-hover text-gray-300 font-semibold"
                 >
-                    OpenAI
+                    Groq
                 </Link>
                 {"and "}
                 <Link

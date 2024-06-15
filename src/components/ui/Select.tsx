@@ -20,7 +20,7 @@ const Select = <T extends string>({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         <div className={twMerge("relative w-full", className)} {...props}>
             <select
-                className="select select-bordered w-full select-lg"
+                className="select select-bordered w-full"
                 value={selected}
                 onChange={(e) => setSelected(e.target.value as T)}
             >

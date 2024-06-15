@@ -14,6 +14,7 @@ type ChatGPTMessage = {
 enum FRAMEWORK {
   NOT_SPECIFIED = "Not specified",
   REACT = "React.js",
+  REACT_NATIVE = "ReactNative",
   SVELTE = "Svelte",
   VUE = "Vue.js",
   ANGULAR = "Angular",

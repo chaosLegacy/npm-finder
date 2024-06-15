@@ -11,20 +11,33 @@ export const getChartData = (
   data: PackageData[],
   duration: DURATION,
 ): ChartData<"line"> => {
-  const colors = [
-    {
-      backgroundColor: "hsla(9, 87%, 67%, 0.2)",
-      borderColor: "hsla(9, 87%, 67%, 1)",
-    },
-    {
-      backgroundColor: "hsla(54, 84%, 65%, 0.2)",
-      borderColor: "hsla(54, 84%, 65%, 1)",
-    },
-    {
-      backgroundColor: "hsla(169, 58%, 74%, 0.2)",
-      borderColor: "hsla(169, 58%, 74%, 1)",
-    },
-  ];
+const colors = [
+  {
+    backgroundColor: "hsla(9, 87%, 67%, 0.2)",
+    borderColor: "hsla(9, 87%, 67%, 1)",
+  },
+  {
+    backgroundColor: "hsla(54, 84%, 65%, 0.2)",
+    borderColor: "hsla(54, 84%, 65%, 1)",
+  },
+  {
+    backgroundColor: "hsla(169, 58%, 74%, 0.2)",
+    borderColor: "hsla(169, 58%, 74%, 1)",
+  },
+  {
+    backgroundColor: "hsla(240, 84%, 65%, 0.2)",
+    borderColor: "hsla(240, 84%, 65%, 1)",
+  },
+  {
+    backgroundColor: "hsla(135, 57%, 55%, 0.2)",
+    borderColor: "hsla(135, 57%, 55%, 1))",
+  },
+  {
+    backgroundColor: "hsla(324, 58%, 74%, 0.2)",
+    borderColor: "hsla(324, 58%, 74%, 1)",
+  },
+];
+
 
   const groupedLabels = data.reduce((acc, item) => {
     const { downloads } = item;

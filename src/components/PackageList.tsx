@@ -32,15 +32,15 @@ const PackageList = ({
 
     const { setGeneratedPackages, isChartView, setIsChartView } = useAppContext();
     return (
-        <div className="grid place-items-center gap-8">
-            <h1 className="max-w-2xl text-center text-3xl font-bold leading-tight text-gray-50 sm:text-5xl sm:leading-tight">
+        <div className="flex flex-col gap-10">
+            <h1 className="max-w-2xl text-center text-5xl font-bold leading-tight">
                 Here are your packages
             </h1>
             <div className="grid w-full place-items-center gap-8">
                 <div className="grid place-items-center gap-5">
                     <Button
                         aria-label="Search again"
-                        className="w-fit"
+                        className="btn-primary"
                         onClick={() => {
                             setGeneratedPackages("");
                             setIsChartView(false);
